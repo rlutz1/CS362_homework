@@ -26,7 +26,7 @@ b = [
     0; 
     0; 
     10000; % this constraint makes it so there are no solutions at all
-    -10;
+    -8;
     ] 
 
 % our bounds, and in this case, we are only sending through 1 unit, so the
