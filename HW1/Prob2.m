@@ -6,13 +6,13 @@
 clc, clearvars;
 
 % the objective function to minimize
-f = [2300, 600]
+f = [2300, 600];
 
 % exact equivalencies to constrain
 Aeq = [];
 beq = [];
 
-% less than or equal to amounts to constrainc
+% less than or equal to amounts to constrain
 A = [
     2300, 600; % this constraint makes it so there are no solutions at all
     -1 -1;
@@ -27,11 +27,18 @@ b = [
     0; 
     ];
 
-% our bounds, and in this case, we are only sending through 1 unit, so the
-% upperbound is just a one vector, the lower is zeros.
-
-lb = zeros(2, 1);
+% upperbound is technically nothing, the lower is zeros.
+lb = ones(2, 1);
 ub = [];
 
-% and, well, let her rip?
+% feed matrices & vectors to lin prog and print solution
 sol = linprog(f, A, b, Aeq, beq, lb, ub)
+
+% printing for readability
+
+if (isempty(sol));
+    disp("No solution found within constraints");
+else;
+    disp("From Dell at $2300 each: " + sol(1));
+    disp("From Apple at $600 each: " + sol(2));
+end;
