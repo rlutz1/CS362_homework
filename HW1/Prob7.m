@@ -8,19 +8,13 @@ clc, clearvars;
 numFams = 3;
 famMems1 = 4;
 famMems2 = 4;
-famMems3 = 6;
+famMems3 = 3;
 
 % the objective function to minimize
     
 f = [-1, -1, -1, ... % P_n
     -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, ... e_k
     -1, -1, -1, -1 ... Q_m
-    ];
-
-
-Aeq = [
-    ];
-beq = [
     ];
 
 % exact equivalencies to constrain

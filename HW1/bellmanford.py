@@ -14,7 +14,7 @@ def bellman_ford(graph, source):
             for v, weight in graph[u].items():
                 if distances[u] != float('inf') and distances[u] + weight < distances[v]:
                     distances[v] = distances[u] + weight
-            print(distances)
+            print(u, ": ", distances)
 
             
 
