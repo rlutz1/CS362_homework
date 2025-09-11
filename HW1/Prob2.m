@@ -28,7 +28,7 @@ b = [
     ];
 
 % upperbound is technically nothing, the lower is zeros.
-lb = ones(2, 1);
+lb = zeros(2, 1);
 ub = [];
 
 % feed matrices & vectors to lin prog and print solution
