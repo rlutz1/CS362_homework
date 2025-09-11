@@ -25,6 +25,8 @@ class Graph:
                         if distances[u] + self.adj_matrix[u][v] < distances[v]:
                             distances[v] = distances[u] + self.adj_matrix[u][v]
                             print(f"Relaxing edge {self.vertex_data[u]}-{self.vertex_data[v]}, Updated distance to {self.vertex_data[v]}: {distances[v]}")
+                        # else:
+                            # print("NOT relaxing edge (", u, ", ", v, ").") # added by RL
 
         return distances
 
@@ -72,6 +74,9 @@ distances = g.bellman_ford('0')
 for i, d in enumerate(distances):
     print(f"Distance from 0 to {g.vertex_data[i]}: {d}")
 
+#  -------------------------------------------------------------
+#  A DIFFERENT IMPLEMENTATION AS TEST
+#  https://www.geeksforgeeks.org/dsa/bellman-ford-algorithm-in-python/
 #  -------------------------------------------------------------
 
 
