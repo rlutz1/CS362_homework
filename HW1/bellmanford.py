@@ -14,7 +14,10 @@ def bellman_ford(graph, source):
             for v, weight in graph[u].items():
                 if distances[u] != float('inf') and distances[u] + weight < distances[v]:
                     distances[v] = distances[u] + weight
-            print(u, ": ", distances)
+            print("vertex ", u, ": ", distances)
+        print("iterated through all edges") 
+        print()
+
 
             
 
@@ -28,17 +31,49 @@ def bellman_ford(graph, source):
 
 
 # Example
+
+# hw example
+# graph = {
+#     '0': {'1': 1, '4': 2, '6': 6},
+#     '1': {'0': 1, '2': 3},
+#     '2': {'1': 3, '3': 5},
+#     '3': {'2': 5, '7': 7},
+#     '4': {'0': 2, '5': 6},
+#     '5': {'4': 6, '7': 8},
+#     '6': {'0': 6, '7': 10},
+#     '7': {'6': 10, '5': 8, '3': 7}
+# }
+
+# toying with the NUMERIC order of vertices
+# now 0 -> 6 -> 7 is found first, lol
 graph = {
-    '0': {'1': 1, '4': 2, '6': 6},
-    '1': {'0': 1, '2': 3},
+    '0': {'6': 1, '4': 2, '1': 6},
+    '1': {'0': 6, '7': 10},
     '2': {'1': 3, '3': 5},
     '3': {'2': 5, '7': 7},
     '4': {'0': 2, '5': 6},
     '5': {'4': 6, '7': 8},
-    '6': {'0': 6, '7': 10},
+    '6': {'0': 1, '2': 3},
     '7': {'6': 10, '5': 8, '3': 7}
-
 }
+
+# with a neg edge 
+# graph = {
+#     '0' : { '1': 4, '2': 5 }, 
+#     '1' : { '3': 4 },
+#     '2' : { '4': 2 },
+#     '3' : { '2': -5 },
+#     '4' : {}
+# }
+
+# with a neg cycle
+# graph = {
+#     '0' : { '1': 4, '2': 5 }, 
+#     '1' : { '3': 4 },
+#     '2' : { '4': 2 },
+#     '3' : { '2': -5 },
+#     '4' : { '3': 2 }
+# }
 source = '0'
 
 shortest_distances = bellman_ford(graph, source)
