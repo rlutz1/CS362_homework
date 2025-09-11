@@ -19,6 +19,7 @@ class Graph:
         distances[start_vertex] = 0
 
         for i in range(self.size - 1):
+            print(i)
             for u in range(self.size):
                 for v in range(self.size):
                     if self.adj_matrix[u][v] != 0:
@@ -27,6 +28,7 @@ class Graph:
                             print(f"Relaxing edge {self.vertex_data[u]}-{self.vertex_data[v]}, Updated distance to {self.vertex_data[v]}: {distances[v]}")
                         # else:
                             # print("NOT relaxing edge (", u, ", ", v, ").") # added by RL
+            
 
         return distances
 
