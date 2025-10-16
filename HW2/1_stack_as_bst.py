@@ -16,7 +16,8 @@ class Bst:
         self.inorder(root.left)
         
         # Visit node
-        print(root.data,end=" ")
+        print("(", root.data, ",", root.order, ")", end=" ")
+      
         
         # Traverse right subtree
         self.inorder(root.right)
@@ -25,9 +26,9 @@ class Bst:
     def is_bst(self, root):
       if root:
 
-        if root.left and root.left.data > root.data:
+        if root.left and root.left.order > root.order:
           return False
-        if root.right and root.right.data < root.data:
+        if root.right and root.right.order < root.order:
           return False
         
         return self.is_bst(root.left) and self.is_bst(root.right)
@@ -46,7 +47,7 @@ class Bst:
       # you could order this way at risk of long skinny tree
       while curr:
         parent = curr
-        if node.order >= curr.order: # allowing for equivalence
+        if node.order > curr.order: 
           curr = curr.right
         elif node.order < curr.order:
           curr = curr.left
@@ -55,6 +56,7 @@ class Bst:
         parent.left = node
       else:
         parent.right = node
+      print(parent.left.data)
 
       # while curr:
       #   parent = curr
@@ -70,6 +72,7 @@ class Bst:
 
     def delete(self, o):
       if not self.root: return
+      print("what")
 
       curr = self.root
       parent = curr
@@ -84,47 +87,60 @@ class Bst:
       curr = self.smallest_in_right(curr, parent)
       
     def smallest_in_right(self, to_delete, parent):
-      replace = to_delete.right
+      replace = None
       
+      print("testing", to_delete.data)
+      print("testing", to_delete.left)
       # if a non null to right of node to delete
-      if replace: 
+      if to_delete.right: 
         # find smallest non null in left side or until fall off tree
+        replace = to_delete.right
+        
         while replace.left:
           replace = replace.left
-        return replace
-      
-      # no node to the right, so see if theres a left child
-      replace = to_delete.left
-      if replace:
+        
         if parent.left == to_delete:
           parent.left = replace
         else:
           parent.right = replace
+        
+        return replace
+        
+      
+      # no node to the right, so see if theres a left child 
+      if to_delete.left: 
+        
+        replace = to_delete.left
+        if parent.left == to_delete:
+          parent.left = replace
+        else:
+          parent.right = replace
+        
         return replace
 
-      return None
+      parent.left = replace
+      return replace
 
 
     def push(self, node):
+      self.increment_order(self.root)
       self.insert(node)
-      self.increment_order(node, self.root)
+      
+      
     
-    def increment_order(self, node, root):
+    def increment_order(self, root):
       if root:
         # Traverse left subtree
-        self.increment_order(node, root.left)
+        self.increment_order(root.left)
         
-        # Visit node
-        if root != node:
-          print(root.data,end=" ")
-          root.order = root.order + 1
+        root.order = root.order + 1
         
         # Traverse right subtree
-        self.increment_order(node, root.right)       
+        self.increment_order(root.right)       
     
     def pop(self):
       self.delete(1)
-      self.decrement_order(self, self.root)
+      self.decrement_order(self.root)
 
     def decrement_order(self, root):
       if root:
@@ -132,8 +148,7 @@ class Bst:
         self.decrement_order(root.left)
         
         # Visit node
-        root.order -= 1
-        print(root.data,end=" ")
+        root.order = root.order - 1
         
         # Traverse right subtree
         self.decrement_order(root.right)
@@ -163,11 +178,48 @@ if __name__ == "__main__":
     # Build the tree
     
     bst = Bst(None)
+    bst.inorder(bst.root) 
+    print()
     bst.push(Node(27))
+    bst.inorder(bst.root)
+    print()
     bst.push(Node(32))
+    bst.inorder(bst.root)
+    print()
     bst.push(Node(34))
+    bst.inorder(bst.root)
+    print()
+    bst.push(Node(4))
+    bst.inorder(bst.root)
+    print()
+
+
+    bst.pop()
+    bst.inorder(bst.root)
+    print()
+
+    bst.pop()
+    bst.inorder(bst.root)
+    print()
+
+    bst.push(Node(-1))
+    bst.inorder(bst.root)
+    print()
+
+    bst.pop()
+    bst.inorder(bst.root)
+    print()
+
+    bst.pop()
+    bst.inorder(bst.root)
+    print()
+    # bst.pop()
+    # bst.inorder(bst.root)
+    # print()
+
+
 
     
    
-    bst.inorder(bst.root)
-    print(bst.is_bst(bst.root))
+    # 
+    # print(bst.is_bst(bst.root))
