@@ -43,19 +43,29 @@ def inorder_merge(root, n, A, i):
       inorder_merge(root.left, n, A, i)
 
     
-      if (curr_node and A[i] < curr_node.data):
+      if (root and A[i] < root.data):
         # insertion of new node
-        temp = curr_node.left
-        curr_node.left = Node(A[i])
-        curr_node.left.left = temp
+        temp = root.left
+        new_node = Node(A[i])
+        root.left = new_node
+        if temp and temp.data > new_node.data:
+          new_node.right = temp
+        else:
+          new_node.left = temp
         i += 1
-        right_dumper = curr_node.left
-        while (i < n and A[i] < curr_node.data):
-          right_dumper.right = Node(A[i])
-          right_dumper = right_dumper.right
+        while (i < n and A[i] < root.data):
+          if not new_node.right:
+            new_node.right = Node(A[i])
+            new_node = new_node.right
+          else:
+             #something
+             print("fuckup")
           i += 1
           # print(i)
+
       i += 1
+          
+      
 
       inorder_merge(root.right, n, A, i)
 
