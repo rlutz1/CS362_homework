@@ -84,42 +84,46 @@ class Bst:
         else:
           curr = curr.right
 
-      curr = self.smallest_in_right(curr, parent)
+      if curr == self.root:
+        self.root = None
+      else:
+        parent.left = None
+      # curr = self.smallest_in_right(curr, parent)
       
-    def smallest_in_right(self, to_delete, parent):
-      replace = None
+    # def smallest_in_right(self, to_delete, parent):
+    #   replace = None
       
-      print("testing", to_delete.data)
-      print("testing", to_delete.left)
-      # if a non null to right of node to delete
-      if to_delete.right: 
-        # find smallest non null in left side or until fall off tree
-        replace = to_delete.right
+    #   print("testing", to_delete.data)
+    #   print("testing", to_delete.left)
+    #   # if a non null to right of node to delete
+    #   if to_delete.right: 
+    #     # find smallest non null in left side or until fall off tree
+    #     replace = to_delete.right
         
-        while replace.left:
-          replace = replace.left
+    #     while replace.left:
+    #       replace = replace.left
         
-        if parent.left == to_delete:
-          parent.left = replace
-        else:
-          parent.right = replace
+    #     if parent.left == to_delete:
+    #       parent.left = replace
+    #     else:
+    #       parent.right = replace
         
-        return replace
+    #     return replace
         
       
-      # no node to the right, so see if theres a left child 
-      if to_delete.left: 
+    #   # no node to the right, so see if theres a left child 
+    #   if to_delete.left: 
         
-        replace = to_delete.left
-        if parent.left == to_delete:
-          parent.left = replace
-        else:
-          parent.right = replace
+    #     replace = to_delete.left
+    #     if parent.left == to_delete:
+    #       parent.left = replace
+    #     else:
+    #       parent.right = replace
         
-        return replace
+    #     return replace
 
-      parent.left = replace
-      return replace
+    #   parent.left = replace
+    #   return replace
 
 
     def push(self, node):
@@ -213,9 +217,17 @@ if __name__ == "__main__":
     bst.pop()
     bst.inorder(bst.root)
     print()
-    # bst.pop()
-    # bst.inorder(bst.root)
-    # print()
+
+    bst.pop()
+    bst.inorder(bst.root)
+    print()
+    bst.pop()
+    bst.inorder(bst.root)
+    print()
+
+    bst.push(Node(5))
+    bst.inorder(bst.root)
+    print()
 
 
 
