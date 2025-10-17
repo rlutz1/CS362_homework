@@ -35,6 +35,7 @@ class Bst:
       
       return True
   
+
     def insert(self, node):
       if not node: return
       if not self.root: 
@@ -56,74 +57,57 @@ class Bst:
         parent.left = node
       else:
         parent.right = node
-      print(parent.left.data)
 
-      # while curr:
-      #   parent = curr
-      #   if node.data >= curr.data: # allowing for equivalence
-      #     curr = curr.right
-      #   elif node.data < curr.data:
-      #     curr = curr.left
+    # Get inorder successor (smallest in right subtree)
+    def getSuccessor(self, curr):
+        curr = curr.right
+        while curr is not None and curr.left is not None:
+            curr = curr.left
+        return curr
 
-      # if node.data < parent.data:
-      #   parent.left = node
-      # else:
-      #   parent.right = node
+    # Delete a node with value x from BST
+    def delete(self, root, o):
+        if root is None:
+            return root
 
-    def delete(self, o):
-      if not self.root: return
-      print("what")
-
-      curr = self.root
-      parent = curr
-
-      while o != curr.order:
-        parent = curr
-        if o < curr.order:
-          curr = curr.left
+        if root.order > o:
+            root.left = self.delete(root.left, o)
+        elif root.order < o:
+            root.right = self.delete(root.right, o)
         else:
-          curr = curr.right
+            
+            # node with 0 or 1  children
+            if root.left is None:
+                return root.right
+            if root.right is None:
+                return root.left
+            
+            #  Node with 2 children
+            succ = self.getSuccessor(root)
+            root.data = succ.data
+            root.right = self.delete(root.right, succ.data)
 
-      if curr == self.root:
-        self.root = None
-      else:
-        parent.left = None
-      # curr = self.smallest_in_right(curr, parent)
-      
-    # def smallest_in_right(self, to_delete, parent):
-    #   replace = None
-      
-    #   print("testing", to_delete.data)
-    #   print("testing", to_delete.left)
-    #   # if a non null to right of node to delete
-    #   if to_delete.right: 
-    #     # find smallest non null in left side or until fall off tree
-    #     replace = to_delete.right
-        
-    #     while replace.left:
-    #       replace = replace.left
-        
-    #     if parent.left == to_delete:
-    #       parent.left = replace
-    #     else:
-    #       parent.right = replace
-        
-    #     return replace
-        
-      
-    #   # no node to the right, so see if theres a left child 
-    #   if to_delete.left: 
-        
-    #     replace = to_delete.left
-    #     if parent.left == to_delete:
-    #       parent.left = replace
-    #     else:
-    #       parent.right = replace
-        
-    #     return replace
+        return root
 
-    #   parent.left = replace
-    #   return replace
+
+    # def delete(self, o):
+    #   if not self.root: return
+    #   print("what")
+
+    #   curr = self.root
+    #   parent = curr
+
+    #   while o != curr.order:
+    #     parent = curr
+    #     if o < curr.order:
+    #       curr = curr.left
+    #     else:
+    #       curr = curr.right
+
+    #   if curr == self.root:
+    #     self.root = None
+    #   else:
+    #     parent.left = None # this is a key part
 
 
     def push(self, node):
@@ -143,7 +127,7 @@ class Bst:
         self.increment_order(root.right)       
     
     def pop(self):
-      self.delete(1)
+      self.root = self.delete(self.root, 1)
       self.decrement_order(self.root)
 
     def decrement_order(self, root):
@@ -229,9 +213,13 @@ if __name__ == "__main__":
     bst.inorder(bst.root)
     print()
 
+    bst.push(Node(2))
+    bst.inorder(bst.root)
+    print()
+
 
 
     
    
     # 
-    # print(bst.is_bst(bst.root))
+    print(bst.is_bst(bst.root))
