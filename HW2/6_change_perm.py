@@ -1,6 +1,6 @@
 # illustration of linear time solution to #6
 
-A = [27, 32, 1, -5]
+A = [10.5, 9.3, 2.7, 13.6]
 o = [3, 1, 2, 0]
 # [-5, 32, 1, 27]
 
@@ -11,22 +11,22 @@ for order in o:
 
 print(o)
 
-# sassy alternate version to achieve nlogn
+# # sassy alternate version to achieve nlogn
 
-A = [27, 32, 1, -5, 1, 1, 1, 1]
-o = [6, 1, 2, 0, 4, 7, 3, 5]
-# [-5, 32, 1, 27]
+# A = [27, 32, 1, -5, 1, 1, 1, 1]
+# o = [6, 1, 2, 0, 4, 7, 3, 5]
+# # [-5, 32, 1, 27]
 
-n = len(o)
-i = 0
+# n = len(o)
+# i = 0
 
-for order in o:
-  o[i] = A[order]
-  i += 1
+# for order in o:
+#   o[i] = A[order]
+#   i += 1
   
-  j = n
-  while j > 1:
-    # print("Filler loop to meet theta req.")
-    j = j // 2
+#   j = n
+#   while j > 1:
+#     # print("Filler loop to meet theta req.")
+#     j = j // 2
 
-print(o)
+# print(o)
