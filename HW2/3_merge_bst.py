@@ -107,7 +107,7 @@ def create_BST(sorted_order, n):
     if n == 0: return None
 
     if n < 3: # special case for now
-        if n == 2:
+        if n == 2: # only 2 nodes
             BST_root = Node(sorted_order[0])
             BST_root.right = Node(sorted_order[1])
             return BST_root
@@ -140,7 +140,7 @@ def create_BST(sorted_order, n):
 if __name__ == "__main__":
     # Build the tree
     
-    # BST 2
+    # BST 1
     BST1_root = Node(6)
     BST1_root.left = Node(4)
     BST1_root.left.right = Node(5)
@@ -179,7 +179,8 @@ if __name__ == "__main__":
     mergedOrder = merge(sortedBST1, sortedBST2)
     print(mergedOrder)
 
-    mergedBST = create_BST(mergedOrder, len(mergedOrder))
+    mergedBST = create_BST(mergedOrder, len(mergedOrder)) # OFFICIAL
+    # mergedBST = create_BST([], 0) # fooling with edge cases
     print("INORDER")
     print_inorder(mergedBST)
     print()
