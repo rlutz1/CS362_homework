@@ -18,43 +18,43 @@
 # capacity = 10
 # n = len(values)
 
-def knapsack_brute_force(capacity_1, capacity_2, n):
-    print(f"knapsack_brute_force({capacity_1},{n} | {capacity_2}, {n})")
+# def knapsack_brute_force(capacity_1, capacity_2, n):
+#     print(f"knapsack_brute_force({capacity_1},{n} | {capacity_2}, {n})")
     
-    # this is the condition of no more items left
-    # or we can't get anything else in this knapsack
-    if n == 0:
-        return 0
+#     # this is the condition of no more items left
+#     # or we can't get anything else in this knapsack
+#     if n == 0:
+#         return 0
     
-    if n == 0 or capacity_1 == 0:
-        if capacity_2 == 0:
-          return 0
-        try_in_k2 = values[n - 1] + knapsack_brute_force(capacity_1, capacity_2 - weights[n - 1], n - 1)
-        try_in_neither = knapsack_brute_force(capacity_1, capacity_2, n - 1)
-        return max(try_in_k2, try_in_neither)
+#     if n == 0 or capacity_1 == 0:
+#         if capacity_2 == 0:
+#           return 0
+#         try_in_k2 = values[n - 1] + knapsack_brute_force(capacity_1, capacity_2 - weights[n - 1], n - 1)
+#         try_in_neither = knapsack_brute_force(capacity_1, capacity_2, n - 1)
+#         return max(try_in_k2, try_in_neither)
 
-    elif n == 0 or capacity_2 == 0:
-        if capacity_1 == 0:
-            return 0
-        try_in_k1 = values[n - 1] + knapsack_brute_force(capacity_1 - weights[n - 1], capacity_2, n - 1)
-        try_in_neither = knapsack_brute_force(capacity_1, capacity_2, n - 1)
-        return max(try_in_k1, try_in_neither)
+#     elif n == 0 or capacity_2 == 0:
+#         if capacity_1 == 0:
+#             return 0
+#         try_in_k1 = values[n - 1] + knapsack_brute_force(capacity_1 - weights[n - 1], capacity_2, n - 1)
+#         try_in_neither = knapsack_brute_force(capacity_1, capacity_2, n - 1)
+#         return max(try_in_k1, try_in_neither)
 
-    elif weights[n - 1] > capacity_1:
-        try_in_k2 = values[n - 1] + knapsack_brute_force(capacity_1, capacity_2 - weights[n - 1], n - 1)
-        try_in_neither = knapsack_brute_force(capacity_1, capacity_2, n - 1)
-        return max(try_in_k2, try_in_neither)
+#     elif weights[n - 1] > capacity_1:
+#         try_in_k2 = values[n - 1] + knapsack_brute_force(capacity_1, capacity_2 - weights[n - 1], n - 1)
+#         try_in_neither = knapsack_brute_force(capacity_1, capacity_2, n - 1)
+#         return max(try_in_k2, try_in_neither)
 
-    elif weights[n - 1] > capacity_2:
-        try_in_k1 = values[n - 1] + knapsack_brute_force(capacity_1, capacity_2 - weights[n - 1], n - 1)
-        try_in_neither = knapsack_brute_force(capacity_1, capacity_2, n - 1)
-        return max(try_in_k1, try_in_neither)
+#     elif weights[n - 1] > capacity_2:
+#         try_in_k1 = values[n - 1] + knapsack_brute_force(capacity_1, capacity_2 - weights[n - 1], n - 1)
+#         try_in_neither = knapsack_brute_force(capacity_1, capacity_2, n - 1)
+#         return max(try_in_k1, try_in_neither)
 
-    else:
-        try_in_k1 = values[n - 1] + knapsack_brute_force(capacity_1 - weights[n - 1], capacity_2, n - 1)
-        try_in_k2 = values[n - 1] + knapsack_brute_force(capacity_1, capacity_2 - weights[n - 1], n - 1)
-        try_in_neither = knapsack_brute_force(capacity_1, capacity_2, n - 1)
-        return max(try_in_k1, try_in_k2, try_in_neither)
+#     else:
+#         try_in_k1 = values[n - 1] + knapsack_brute_force(capacity_1 - weights[n - 1], capacity_2, n - 1)
+#         try_in_k2 = values[n - 1] + knapsack_brute_force(capacity_1, capacity_2 - weights[n - 1], n - 1)
+#         try_in_neither = knapsack_brute_force(capacity_1, capacity_2, n - 1)
+#         return max(try_in_k1, try_in_k2, try_in_neither)
 
 # values = [3, 14, 7]
 # weights = [1, 2, 3]
@@ -69,14 +69,14 @@ def knapsack_brute_force(capacity_1, capacity_2, n):
 # n = len(values)
 
 # something is failing on this one
-# algo takes all the items haha
-values = [10, 9, 15, 13]
-weights = [1, 2, 1, 1]
-capacity_1 = 2
-capacity_2 = 2
-n = len(values)
+# # algo takes all the items haha
+# values = [10, 9, 15, 13]
+# weights = [1, 2, 1, 1]
+# capacity_1 = 2
+# capacity_2 = 2
+# n = len(values)
 
-print("\nMaximum value in Knapsack =", knapsack_brute_force(capacity_1, capacity_2, n))
+# print("\nMaximum value in Knapsack =", knapsack_brute_force(capacity_1, capacity_2, n))
 
 
 # w3 schools implementation of top down approach
@@ -97,10 +97,43 @@ print("\nMaximum value in Knapsack =", knapsack_brute_force(capacity_1, capacity
 #       print(row)
 #   return tab[n][capacity]
 
-# values = [300, 200, 400, 500]
-# weights = [2, 1, 5, 3]
-# capacity = 10
-# print("\nMaximum value in Knapsack =", knapsack_tabulation())
+def get_3d_array(x, y, z):
+    arr = []
+    for plane in range(0, z):
+        new_plane = []
+        arr.append(new_plane)
+        for row in range(0, y):
+            new_plane.append([0] * x)
+    return arr
+
+
+def knapsack_tabulation():
+  n = len(values)
+  tab = get_3d_array(capacity_1 + 1, n + 1, capacity_2 + 1) 
+
+#   print(tab)
+
+  for k2_w in range(0, capacity_2 ):
+
+    for i in range(1, n + 1):
+        for k1_w in range(1, capacity_1 + 1):
+            if weights[i-1] <= k1_w:
+                include_item = values[i - 1] + tab[k2_w][i - 1][k1_w - weights[i - 1]]
+                exclude_item = tab[k2_w][i - 1][k1_w]
+                tab[k2_w][i][k1_w] = max(include_item, exclude_item)
+            else:
+                tab[k2_w][i][k1_w] = tab[k2_w][i - 1][k1_w]
+    
+  for plane in tab:
+    for row in plane:
+        print(row)
+  return tab[capacity_2][n][capacity_1]
+
+values = [300, 200, 400, 500]
+weights = [2, 1, 5, 3]
+capacity_1 = 10
+capacity_2 = 2
+print("\nMaximum value in Knapsack =", knapsack_tabulation())
 
 # 2 knapsacks
 # idea: get the max value from the largest knapsack first

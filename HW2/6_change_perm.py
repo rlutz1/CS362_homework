@@ -11,6 +11,21 @@ for order in o:
 
 print(o)
 
+
+# huh, this is a thought
+
+# def heapify(root, parent, child):
+#   print
+
+# root = 0
+
+# for perm in o:
+#   child = perm
+#   parent = (perm - 1) // 2
+#   if parent >= 0:
+#     heapify(root, parent, child)
+#     root += 1
+
 # # sassy alternate version to achieve nlogn
 
 # A = [27, 32, 1, -5, 1, 1, 1, 1]
