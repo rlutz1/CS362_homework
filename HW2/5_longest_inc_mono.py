@@ -5,7 +5,9 @@
 # A = [1, 2, 0, 3, 9] # expected answer: 1 -> 2 -> 3 -> 9
 # A = [1, 3, 5, 7, 9, 11] # expected answer: 1 -> 3 -> 5 -> 7 -> 9 -> 11
 # A = [3, 2, 1, 0] # yields: 0
-A = [7, 6, 5, 7, 9, 11]
+# A = [7, 6, 5, 7, 9, 11]
+A = [7, 6, 5, 4, 3, 2, 3]
+# A = []
 
 n = len(A)
 best_path = []
@@ -24,8 +26,8 @@ for src in range(0, n):
 
 # (2) find the max because i'm too tired to keep track in place
 # O(n)
-longest = 0
-longest_index = 0
+longest = -1
+longest_index = -1
 for i in range(0, n):
    if dist[i] > longest:
       longest_index = i
@@ -33,13 +35,14 @@ for i in range(0, n):
 
 # (3) build the longest subsequence starting from max val
 # O(n)
-last = A[longest_index]
-best_path.append(last)
+if longest > -1 and longest_index > -1:
+  last = A[longest_index]
+  best_path.append(last)
 
-for j in range(longest_index + 1, n):
-   if (A[j] > last):
-      last = A[j]
-      best_path.append(last)
+  for j in range(longest_index + 1, n):
+    if (A[j] > last):
+        last = A[j]
+        best_path.append(last)
       
 # so we're left with T(n) = 2O(n) + O(n^2) = O(n^2)
 
