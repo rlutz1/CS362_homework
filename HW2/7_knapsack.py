@@ -113,16 +113,25 @@ def knapsack_tabulation():
 
 #   print(tab)
 
-  for k2_w in range(0, capacity_2 ):
+  for i in range(1, n + 1):
+      
+      for k2_w in range(1, capacity_2 + 1):
+            
+            for k1_w in range(1, capacity_1 + 1):
 
-    for i in range(1, n + 1):
-        for k1_w in range(1, capacity_1 + 1):
-            if weights[i-1] <= k1_w:
-                include_item = values[i - 1] + tab[k2_w][i - 1][k1_w - weights[i - 1]]
-                exclude_item = tab[k2_w][i - 1][k1_w]
-                tab[k2_w][i][k1_w] = max(include_item, exclude_item)
-            else:
-                tab[k2_w][i][k1_w] = tab[k2_w][i - 1][k1_w]
+                if weights[i - 1] <= k1_w:
+                    # include_item_k2 = values[i - 1] + tab[k2_w - weights[i - 1]][i - 1][k1_w]
+                    include_item_k1 = values[i - 1] + tab[k2_w][i - 1][k1_w - weights[i - 1]]
+                    exclude_item_both = tab[k2_w][i - 1][k1_w]
+                    tab[k2_w][i][k1_w] = max(include_item_k1, exclude_item_both) #include_item_k2)
+                else:
+                    tab[k2_w][i][k1_w] = tab[k2_w][i - 1][k1_w]
+                
+                if weights[i - 1] <= k2_w:
+                    curr_max = tab[k2_w][i][k1_w]
+                    include_item_k2 = values[i - 1] + tab[k2_w - weights[i - 1]][i - 1][k1_w]
+                    tab[k2_w][i][k1_w] = max(curr_max, include_item_k2)
+
     
   for plane in tab:
     for row in plane:
@@ -131,7 +140,7 @@ def knapsack_tabulation():
 
 values = [300, 200, 400, 500]
 weights = [2, 1, 5, 3]
-capacity_1 = 10
+capacity_1 = 5
 capacity_2 = 2
 print("\nMaximum value in Knapsack =", knapsack_tabulation())
 
