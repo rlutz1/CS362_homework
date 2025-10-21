@@ -1,3 +1,5 @@
+
+
 A = [1, 2, 0, 3, 9] # expected answer: 1 -> 2 -> 3 -> 9
 
 class Node:
@@ -6,19 +8,47 @@ class Node:
       self.edges = edges # list of of TO destinations
       self.best_path = []
       self.id = id
+      self.in_degree = 0
+    def print(self):
+      print("NODE")
+      print("ID: ", self.id, " VALUE: ", self.val, "INDEGREE: ", self.in_degree)
+      print("GOES TO:")
+      for e in self.edges:
+        print(e.val)
+
+      print("BEST PATH")
+      
+      for node in self.best_path:
+        print(node.val, end=" ")
+      print()
       
 
 class Graph:
-   def __init__(self):
+  def __init__(self):
       self.V = None # list of nodes
 
-   def print(self):
+  def print(self):
       for v in self.V:
-        print("NODE")
-        print("ID: ", v.id, " VALUE: ", v.val)
-        print("GOES TO:")
-        for e in v.edges:
-            print(e.val)
+        v.print()
+    
+  def topo_sort(self):
+      temp = self.V.copy() # TODO needs a more careful copy
+      Q = []
+
+      while temp: # while not empty
+        for v in temp: # for each vertex in V
+          if v.in_degree == 0: # indegree 0
+             Q.append(v) # add to queue
+             for e in v.edges: # for each edge destination
+                e.in_degree -= 1 # decrement the in degree
+             temp.remove(v) # remove the node
+      # self.V = temp # restore
+      return Q
+                
+
+       
+
+   
 
 # step 1: turn the sequence into a DAG, O(n^2) loop
 dag = Graph()
@@ -43,9 +73,61 @@ for node in range(i, n): # for each element in A
 
     if (A[dest] > A[node]): # if it is an increasing value
       E.append(dag.V[dest]) # add an edge from u -> v
+      dag.V[dest].in_degree += 1# increment indegree for toposort
 
   dag.V[node].edges = E
 
 dag.V = V
 
+# dag.print()
+
+# step 2: toposort that bad boy
+topo_sort = dag.topo_sort()
+for node in topo_sort:
+  print(node.val)
+
+# dag.print()
+
+# step 3: run a simple BF iteration through topo sort, keeping track of best path
+
+dist = []
+
+for i in range(0, n):
+  dist.append(0)
+
+
+for src in topo_sort:
+   for dest in src.edges:
+      if dist[src.id] + 1  > dist[dest.id]:
+         dist[dest.id] = dist[src.id] + 1 # update longest path so far
+         print(dist)
+         dest.best_path = []
+         for bp in src.best_path:
+            dest.best_path.append(bp)
+        #  dest.best_path = src.best_path # update the best path to path taken to source
+         dest.best_path.append(src) # add souce to best path
+         print("bp update ", "source: ", src.val, ", dest: ", dest.val)
+         for bp in dest.best_path:
+          print(bp.val, end="->")
+         print()
+
 dag.print()
+
+# step 4: find longest path held
+longest = 0
+best = []
+for v in dag.V:
+   length = len(v.best_path)
+   if length > longest:
+      length = longest
+      best = v.best_path
+
+# print the longest monotonically increasing sequence
+print("(", end ="")
+for node in best:
+   if node == best[longest - 1]:
+     print(node.val, end = "") 
+   else:
+      print(node.val, end = ", ")
+print(")", end = ",  ")
+print("length: ", longest)
