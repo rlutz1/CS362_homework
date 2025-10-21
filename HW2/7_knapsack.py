@@ -115,7 +115,7 @@ def knapsack_tabulation():
 
   for i in range(1, n + 1):
       
-      for k2_w in range(1, capacity_2 + 1):
+      for k2_w in range(0, capacity_2 + 1):
             
             for k1_w in range(1, capacity_1 + 1):
 
@@ -134,14 +134,15 @@ def knapsack_tabulation():
 
     
   for plane in tab:
+    print("-")
     for row in plane:
         print(row)
   return tab[capacity_2][n][capacity_1]
 
-values = [300, 200, 400, 500]
-weights = [2, 1, 5, 3]
-capacity_1 = 5
-capacity_2 = 2
+values = [10, 9, 15, 13]
+weights = [1, 2, 1, 1]
+capacity_1 = 2
+capacity_2 = 1
 print("\nMaximum value in Knapsack =", knapsack_tabulation())
 
 # 2 knapsacks
