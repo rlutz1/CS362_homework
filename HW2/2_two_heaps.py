@@ -16,7 +16,7 @@ def is_min_heap(heap, parent, n):
 
 def build_heap(heap):
   n = len(heap)
-  if n != 0:
+  if n > 0:
     start = (n // 2) - 1 # last parent node
     
     for i in range(start, -1, -1): # from last parent up to root

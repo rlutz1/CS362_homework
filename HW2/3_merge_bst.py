@@ -32,12 +32,15 @@ def print_preorder(root):
         print_preorder(root.right)
 
 # Inorder collection of nodes
-def collect_inorder(root, A):
+def collect_inorder(root, A, i):
     if root: # if not null
-        collect_inorder(root.left, A)
-        A.append(root.data)
-        collect_inorder(root.right, A)
-        return A
+        (A, i) = collect_inorder(root.left, A, i)
+        A[i] = root.data
+        i += 1
+        (A, i) = collect_inorder(root.right, A, i)
+        print(A, ", ", i)
+        # return (A, i)
+    return (A, i)
 
 # tester code: is a bst if left is less than, right is larger
 def is_bst(root):
@@ -86,13 +89,14 @@ def merge(A, B):
         if A[i] < B[j]:
             C.append(A[i])
             i += 1
-        elif A[i] > B[j]:
+        # elif A[i] > B[j]:
+        else:
             C.append(B[j])
             j += 1
-        else: # they are equal, save one only, assume only distinct in bst
-            C.append(A[i])
-            i += 1
-            j += 1
+        # else: # they are equal, save one only, assume only distinct in bst
+        #     C.append(A[i])
+        #     i += 1
+        #     j += 1
 
     while i < n:
         C.append(A[i])
@@ -133,6 +137,17 @@ def create_BST(sorted_order, n):
 
     return subtree
 
+def better_create_BST(sorted_order, start, end):
+    if start > end:
+        return None
+    
+    mid = (start + end) // 2
+    root = Node(sorted_order[mid])
+
+    root.left = better_create_BST(sorted_order, start, mid - 1)
+    root.right = better_create_BST(sorted_order, mid + 1, end)
+    return root
+
 
 
 
@@ -158,6 +173,7 @@ if __name__ == "__main__":
     BST2_root.right.left.left = Node(4)
     BST2_root.right.right.left = Node(9)
     BST2_root.right.right.left.left = Node(7) 
+    BST2_root.right.right.left.left.right = Node(7) 
     
     # Function call
     # print("Inorder Traversal:",end="\n")
@@ -170,16 +186,30 @@ if __name__ == "__main__":
     # print(is_bst(BST2_root))
 
     # get list of values in order
-    sortedBST1 = collect_inorder(BST1_root, [])
+    A = [0] * 7
+    (sortedBST1, _) = collect_inorder(BST1_root, A, 0)
     print(sortedBST1)
 
-    sortedBST2 = collect_inorder(BST2_root, [])
+    B = [0] * 9
+    (sortedBST2, _) = collect_inorder(BST2_root, B, 0)
     print(sortedBST2)
 
     mergedOrder = merge(sortedBST1, sortedBST2)
     print(mergedOrder)
 
     mergedBST = create_BST(mergedOrder, len(mergedOrder)) # OFFICIAL
+    # mergedBST = create_BST([], 0) # fooling with edge cases
+    print("INORDER")
+    print_inorder(mergedBST)
+    print()
+
+    print("PREORDER")
+    print_preorder(mergedBST)
+    print()
+
+    print(is_bst(mergedBST))
+
+    mergedBST = better_create_BST(mergedOrder, 0, len(mergedOrder) - 1) # OFFICIAL
     # mergedBST = create_BST([], 0) # fooling with edge cases
     print("INORDER")
     print_inorder(mergedBST)

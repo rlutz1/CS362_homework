@@ -43,7 +43,7 @@ class Bst:
         return
       
       curr = self.root
-      parent = curr
+      # parent = curr
 
       # you could order this way at risk of long skinny tree
       while curr:
@@ -59,7 +59,7 @@ class Bst:
         parent.right = node
 
     # Get inorder successor (smallest in right subtree)
-    def getSuccessor(self, curr):
+    def get_successor(self, curr):
         curr = curr.right
         while curr is not None and curr.left is not None:
             curr = curr.left
@@ -67,25 +67,26 @@ class Bst:
 
     # Delete a node with value x from BST
     def delete(self, root, o):
-        if root is None:
+        if not root:
             return root
 
         if root.order > o:
             root.left = self.delete(root.left, o)
         elif root.order < o:
             root.right = self.delete(root.right, o)
-        else:
+        else: # found node to delete
             
             # node with 0 or 1  children
-            if root.left is None:
+            if not root.left:
                 return root.right
-            if root.right is None:
+            if not root.right:
                 return root.left
             
             #  Node with 2 children
-            succ = self.getSuccessor(root)
+            succ = self.get_successor(root)
             root.data = succ.data
-            root.right = self.delete(root.right, succ.data)
+            root.order = succ.order
+            root.right = self.delete(root.right, succ.order)
 
         return root
 
@@ -145,12 +146,12 @@ class Bst:
 
     
 
-# Class describing a node of tree
+# a node for the bst
 class Node:
-    def __init__(self, v):
+    def __init__(self, data):
         self.left = None
         self.right = None
-        self.data = v
+        self.data = data
         self.order = 1 # note, always 1 to avoid problems
 
 
@@ -168,15 +169,19 @@ if __name__ == "__main__":
     bst = Bst(None)
     bst.inorder(bst.root) 
     print()
+
     bst.push(Node(27))
     bst.inorder(bst.root)
     print()
+
     bst.push(Node(32))
     bst.inorder(bst.root)
     print()
+
     bst.push(Node(34))
     bst.inorder(bst.root)
     print()
+
     bst.push(Node(4))
     bst.inorder(bst.root)
     print()
@@ -205,6 +210,7 @@ if __name__ == "__main__":
     bst.pop()
     bst.inorder(bst.root)
     print()
+
     bst.pop()
     bst.inorder(bst.root)
     print()
@@ -217,6 +223,17 @@ if __name__ == "__main__":
     bst.inorder(bst.root)
     print()
 
+    bst.pop()
+    bst.inorder(bst.root)
+    print()
+
+    bst.push(Node(5))
+    bst.inorder(bst.root)
+    print()
+
+    bst.pop()
+    bst.inorder(bst.root)
+    print()
 
 
     

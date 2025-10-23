@@ -2,11 +2,11 @@
 # really all we truly need is that double loop if we're smart about it
 # so, let's have a cleaner attempt 2
 
-# A = [1, 2, 0, 3, 9] # expected answer: 1 -> 2 -> 3 -> 9
+A = [1, 2, 0, 3, 9] # expected answer: 1 -> 2 -> 3 -> 9
 # A = [1, 3, 5, 7, 9, 11] # expected answer: 1 -> 3 -> 5 -> 7 -> 9 -> 11
 # A = [3, 2, 1, 0] # yields: 0
 # A = [7, 6, 5, 7, 9, 11]
-A = [7, 6, 5, 4, 3, 2, 3]
+# A = [7, 6, 5, 4, 3, 2, 3]
 # A = []
 
 n = len(A)
@@ -14,14 +14,14 @@ best_path = []
 dist = []
 
 for i in range(0, n):
-  dist.append(0)
+  dist.append(1)
 
 # (1) use dp array to get the longest possible 
 # increasing sequence length from each node, left to right
 # O(n^2)
 for src in range(0, n):
    for dest in range(src + 1, n):
-      if A[dest] > A[src]:
+      if A[dest] >= A[src]:
          dist[src] += 1
 
 # (2) find the max because i'm too tired to keep track in place
@@ -40,7 +40,54 @@ if longest > -1 and longest_index > -1:
   best_path.append(last)
 
   for j in range(longest_index + 1, n):
-    if (A[j] > last):
+    if (A[j] >= last):
+        last = A[j]
+        best_path.append(last)
+      
+# so we're left with T(n) = 2O(n) + O(n^2) = O(n^2)
+
+print("LONGEST PATH DISTANCES: ", dist)
+
+print("LONGEST MONOTONICALLY INC PATH: ", best_path)
+
+# =====================================================================
+# back side approach
+# =====================================================================
+
+dist = [1] * n
+best_path = []
+# for a in A:
+#    best_path.append([a])
+
+# the longest subsequence from the back is at most 1
+# if dist:
+#   dist[n - 1] = 1
+
+for i in range(n - 2, -1, -1):
+   for j in range(i + 1, n):
+      if (A[j] >= A[i]):
+         dist[i] += dist[j]
+        #  for path in best_path[j]: # find all best paths
+        #    best_path[i].append(path)
+         break
+
+# (2) find the max because i'm too tired to keep track in place
+# O(n)
+longest = -1
+longest_index = -1
+for i in range(0, n):
+   if dist[i] > longest:
+      longest_index = i
+      longest = dist[i]
+
+# (3) build the longest subsequence starting from max val
+# O(n)
+if longest > -1 and longest_index > -1:
+  last = A[longest_index]
+  best_path.append(last)
+
+  for j in range(longest_index + 1, n):
+    if (A[j] >= last):
         last = A[j]
         best_path.append(last)
       
