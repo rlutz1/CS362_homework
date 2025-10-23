@@ -9,24 +9,30 @@ def fill_knapsacks(cap_1, cap_2, values, weights):
 
     n = len(values)
 
+    # make a 3d array with + 1 dimension for each thing:
+    # items are the PLANES
+    # knapsack 1 units are the ROWS
+    # knapsack 2 units are the COLUMNS
     dp = [[[0 for _ in range(cap_2 + 1)] for _ in range(cap_1 + 1)]
           for _ in range(n + 1)]
 
+    # for every item
     for item in range(1, n + 1):
-        v = values[item - 1]
-        w = weights[item - 1]
-        for c_1 in range(0, cap_1 + 1):
-            for c_2 in range(0, cap_2 + 1):
-                exclude_in_both = dp[item - 1][c_1][c_2]
-                include_in_k1 = 0
+        v = values[item - 1] # current value
+        w = weights[item - 1] # current weight
+        for c_1 in range(0, cap_1 + 1): # for each unit capacity in knapsack 1
+            for c_2 in range(0, cap_2 + 1): # for each unit capacity in knapsack 2
+                exclude_in_both = dp[item - 1][c_1][c_2] # choice of excluding from both knaps
+                include_in_k1 = 0 # init so if we cannot fit in a knap, doesn't fuck up max call
                 include_in_k2 = 0
 
-                if w <= c_1:
-                    include_in_k1 = v + dp[item - 1][c_1 - w][c_2]
+                if w <= c_1: # if we can fit in knap 1
+                    include_in_k1 = v + dp[item - 1][c_1 - w][c_2] # try to include
                 
-                if w <= c_2:
-                    include_in_k2 = v + dp[item - 1][c_1][c_2 - w]
+                if w <= c_2: # if we can fit in knap 2
+                    include_in_k2 = v + dp[item - 1][c_1][c_2 - w] # try to include
 
+                # keep only the max value of all 3 options
                 dp[item][c_1][c_2] = max(exclude_in_both, include_in_k1, include_in_k2)
     return dp
 
