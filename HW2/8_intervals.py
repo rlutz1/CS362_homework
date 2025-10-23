@@ -14,7 +14,7 @@
 
 #  BECAUSE I AM SO LOST IN THE KNAPSACK SAUCE
 
-A = [[0, 1], [3, 4], [-1, 1]]
+
 
 # TODO: sort the intervals by first: nlogn if done right:
 
@@ -50,7 +50,7 @@ def merge(A, start, mid, end):
 
 
     while i < length_left and j < length_right:
-        if L[i] < R[j]:
+        if L[i][0] < R[j][0]:
             A[k] = L[i]
             i += 1
             
@@ -70,59 +70,72 @@ def merge(A, start, mid, end):
         A[k] = R[j]
         j += 1
         k += 1
-    print(A)
+    # print(A)
 
 # B = [6, 7, 2, -1, 9] # sort test
 # merge_sort(B, 0, len(B) - 1)
 # print(B)
 
-A = [[-1, 1], [0, 1], [3, 5], [3, 4], [3, 6], [3, 5]]
+
+
+
+# A = [[-1, 1], [0, 1], [3, 5], [3, 4], [3, 6], [3, 5]]
 
 # gather intervals contained in others
 # if the first of next is > than the top of last, not contained
 # if the last of next <= top of last, all good
 # i think you have to check all of them
 
-contained = []
 
-curr_max = A[0][1] # 1
-curr_min = A[0][0] # -1
-curr = 0
-# print(curr_max)
+def contained_intervals(A, n):
+  if n > 0:
+    # print(A) # unsorted
 
-n = len(A)
-next = 1
-while next < n:
-  # first = second - 1
+    merge_sort(A, 0, len(A) - 1) # sort by start of interval
 
-  start = A[next][0]
-  end = A[next][1]
+    # print(A) # sorted by first value
 
-  if start == curr_min:
-    if curr_max > end: # larger of two intervals
-      contained.append(A[next])
-    else: # less than or equal
-      contained.append(A[curr])
-      curr = next # update interval bookmark
-      curr_max = end # update curr_max to largest
+    contained = []
 
-  elif start > curr_min: # start is past the last starting interval, which is the only other case if sorted
-    if end <= curr_max:
-      contained.append(A[next])
-    else:
-      curr = next
-      curr_min = start
-      curr_max = end
+    # init values, assume this is best
+    curr_max = A[0][1] # 1
+    curr_min = A[0][0] # -1
+    curr = 0
+    # print(curr_max)
 
+    next = 1 # next value
+
+    while next < n:
+      # first = second - 1
+
+      start = A[next][0] # start and end of next interval
+      end = A[next][1]
+
+      if start == curr_min: # if they start at same spot
+        if curr_max > end: # if current is larger of two intervals
+          contained.append(A[next]) # save the next interval
+        else: # less than or equal
+          contained.append(A[curr]) # save the current -- it's the smaller interval
+          curr = next # update interval bookmark to larger
+          curr_max = end # update curr_max to largest
+
+      else: # start is past the last starting interval, which is the only other case once sorted
+        if end <= curr_max: # if the end interval is less than or equal to the current max, it is contained
+          contained.append(A[next])
+        else: # this is the next interval to compare other intervals with
+          curr = next
+          curr_min = start
+          curr_max = end
+
+      next += 1 # progress linearly through the array
   
+    return contained
 
-  # if A[next][1] <= curr_max:
-  #   contained.append(A[next])
-  #   next += 1
-  #   continue
 
-  next += 1
+# A = [[3, 4], [0, 1], [3, 6], [2, 4], [1, 2], [3, 5]]
+A = [[-1, 1], [0, 1], [3, 4], [3, 6]]
+# A = []
+print(contained_intervals(A, len(A)))
+    
 
-  
-
-print(contained)
+# print(contained)
