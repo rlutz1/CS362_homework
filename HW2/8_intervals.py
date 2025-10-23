@@ -26,46 +26,55 @@ def merge_sort(A, start, end):
 
   merge_sort(A, start, mid)
   merge_sort(A, mid + 1, end)
-  merge(A, start, mid, mid + 1, end)
+  merge(A, start, mid, end)
 
-def merge(A, s1, e1, s2, e2):
+def merge(A, start, mid, end):
     i = 0
     j = 0
-    k = s1
-    L = []
-    R = []
+    length_left = mid - start + 1
+    length_right = end - mid
+    k = start
+    L = [0] * length_left
+    R = [0] * length_right
+    # if s1 == s2: print("dumb")
+
+    for e in range(length_left):
+       L[e] = A[start + e]
+
+    for f in range(length_right):
+       R[f] = A[mid + 1 + f]
+    # print(L, R)
+
+    # length_left = mid - start
+    # length_right = end - mid
 
 
-    for i in range(s1, e1 + 1):
-       L.append(A[i])
-
-    for i in range(s2, e2 + 1):
-       R.append(A[i])
-
-    while i <= (e1 - s1) and j <= (e2 - s2):
+    while i < length_left and j < length_right:
         if L[i] < R[j]:
             A[k] = L[i]
             i += 1
             
         else:
-            A[k] = R[i]
+            A[k] = R[j]
             j += 1
 
         k += 1
 
 
-    while i <= (e1 - s1):
+    while i < length_left:
         A[k] = L[i]
         i += 1
         k += 1
     
-    while j < (e2 - s2):
-        A[k] = R[i]
+    while j < length_right:
+        A[k] = R[j]
         j += 1
         k += 1
+    print(A)
 
-
-
+# B = [6, 7, 2, -1, 9] # sort test
+# merge_sort(B, 0, len(B) - 1)
+# print(B)
 
 A = [[-1, 1], [0, 1], [3, 5], [3, 4], [3, 6], [3, 5]]
 
