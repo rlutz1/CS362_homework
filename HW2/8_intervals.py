@@ -18,6 +18,55 @@ A = [[0, 1], [3, 4], [-1, 1]]
 
 # TODO: sort the intervals by first: nlogn if done right:
 
+def merge_sort(A, start, end):
+  if start >= end:
+    return
+  
+  mid = (start + end) // 2
+
+  merge_sort(A, start, mid)
+  merge_sort(A, mid + 1, end)
+  merge(A, start, mid, mid + 1, end)
+
+def merge(A, s1, e1, s2, e2):
+    i = 0
+    j = 0
+    k = s1
+    L = []
+    R = []
+
+
+    for i in range(s1, e1 + 1):
+       L.append(A[i])
+
+    for i in range(s2, e2 + 1):
+       R.append(A[i])
+
+    while i <= (e1 - s1) and j <= (e2 - s2):
+        if L[i] < R[j]:
+            A[k] = L[i]
+            i += 1
+            
+        else:
+            A[k] = R[i]
+            j += 1
+
+        k += 1
+
+
+    while i <= (e1 - s1):
+        A[k] = L[i]
+        i += 1
+        k += 1
+    
+    while j < (e2 - s2):
+        A[k] = R[i]
+        j += 1
+        k += 1
+
+
+
+
 A = [[-1, 1], [0, 1], [3, 5], [3, 4], [3, 6], [3, 5]]
 
 # gather intervals contained in others
