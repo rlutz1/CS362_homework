@@ -45,6 +45,8 @@
 # print(o)
 
 
+
+
 # assume we are getting one indexing
 def reorder(o):
   n = len(o)
@@ -153,7 +155,26 @@ def heap_sort(A, o):
 
 
  
+def bullshit_method(A, o):
+  i = 0
+  for order in test_o:
+    test_o[i] = test_A[order - 1]
+    i += 1
+  return o
 
+def real_method(A, o):
+    print()
+
+
+def test(A, n):
+  # given size of n elements
+  # (1) need to come up with all permutation reorderings possible
+  # need to go through each of those and:
+  # give it and A to bullshit method
+  # ensure giving copy of original A
+  # give it and A to real method
+  # compare the returns and ensure they are the same for all permutations.
+  print()
 
 
 
@@ -206,10 +227,4 @@ print(A)
 
 
 
-i = 0
-for order in test_o:
-  test_o[i] = test_A[order - 1]
-  i += 1
-
-print(test_o)
 
