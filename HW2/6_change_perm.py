@@ -46,7 +46,7 @@
 
 
 
-
+# TODO, for with an inner while?
 # assume we are getting one indexing
 def reorder(o):
   n = len(o)
@@ -82,7 +82,7 @@ def reorder(o):
         o[current_position] = (-1) * o[current_position] # make it negative, unchanged
         # o[element_index - 1] = (-1) * o[element_index - 1] # make it negative unchanged
         continue
-      
+      print("----------")
       # general case, we need to change the element number at current position to the neg curr position
       o[element_index - 1] = (-1) * (current_position + 1) 
       print(o)
@@ -91,7 +91,7 @@ def reorder(o):
       o[element_at_needed_position - 1] = (-1) * element_index
       print(o)
       # last, 3rd step
-      o[current_position] = (-1) * element_at_needed_position
+      o[current_position] = (-1) * element_at_needed_position # TODO! this is wrong!
       print(o)
     else: 
        o[current_position] = (-1) * o[current_position] # make it negative, unchanged
@@ -183,8 +183,8 @@ def test(A, n):
 # o = [1, 2, 3]
 # A = [10.5, 9.3, 2.7, 13.6] # working
 # o = [4, 2, 3, 1]
-A = ['A', 'B', 'C', 'D', 'E']
-test_A = ['A', 'B', 'C', 'D', 'E']
+A = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
+test_A = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
 # o = [1, 2, 3, 4] # unchanged
 # test_o = [1, 2, 3, 4]
@@ -194,8 +194,11 @@ test_A = ['A', 'B', 'C', 'D', 'E']
 # o = [1, 4, 2, 3] # ADBC
 # test_o = [1, 4, 2, 3]
 
-o = [5, 2, 1, 4, 3] # EBADC
-test_o = [5, 2, 1, 4, 3]
+# o = [5, 2, 1, 4, 3] # EBADC
+# test_o = [5, 2, 1, 4, 3]
+
+o = [6, 3, 1, 2, 4, 5, 7]
+test_o = [6, 3, 1, 2, 4, 5, 7]
 
 # o = [1, 2, 3] # A B C
 # test_o = [1, 2, 3]
@@ -225,6 +228,10 @@ heap_sort(A, o)
 print("REORDERED")
 print(A)
 
-
+i = 0
+for order in test_o:
+  test_o[i] = test_A[order - 1]
+  i += 1
+print(test_o)
 
 
