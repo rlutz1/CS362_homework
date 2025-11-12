@@ -2,27 +2,24 @@ import cmath
 
 i = complex(0, 1)
 
-# Fast Fourier Transform implementation
-def FFT(coeffs, invert=False):
+# FFT implementation
+def FFT(coeffs, invert):
     n = len(coeffs)
     if n == 1:
         return
 
-    # Split into even and odd indexed terms
-    # even_terms = [coeffs[2 * i] for i in range(n // 2)]
+    # even/odd coefficients of given coeff array
     even_coeff = coeffs[::2]
-    # odd_terms = [coeffs[2 * i + 1] for i in range(n // 2)]
     odd_coeff = coeffs[1::2]
 
     # Recursive FFT on both halves
     FFT(even_coeff, invert)
     FFT(odd_coeff, invert)
 
-    # Calculate angle and root of unity
-    pi = cmath.pi
-    angle = 2 * pi / n * (-1 if invert else 1)
+    # get your roots of unity to evaluate at to make your points
+    angle = 2 * cmath.pi / n * (-1 if invert else 1) # 1/w if inverting!
     w = complex(1, 0)
-    wn = cmath.exp(complex(0, angle))
+    wn = cmath.exp(complex(0, angle)) # w ^
 
     # Combine
     for i in range(n // 2):
