@@ -2,55 +2,6 @@ import cmath
 
 i = complex(0, 1)
 
-# def IFFT(P):
-#   # P is a list of points here.
-#   n = len(P) # needs to be a power of 2 here, pad as necessary prior
-#   if n == 1:
-#     return [P[0]]
-  
-#   # exp = (2 * math.pi * i) / n
-#   # w = math.e ^ exp
-#   theta = -2 * math.pi / n 
-#   w = list( complex( math.cos(theta * i), math.sin(theta * i)) for i in range(n) ) 
-  
-#   Pe, Po = P[0::2], P[1::2]
-#   ye, yo = FFT(Pe), FFT(Po)
-
-#   y = [0] * n
-#   mid = n // 2
-#   for j in range(mid):
-#     prod = w[j] * yo[j]
-#     even_grab = ye[j]
-#     y[j] = even_grab + prod
-#     y[j + mid] = even_grab - prod
-
-#   return y
-
-# def FFT(P):
-#   # P is a coefficient list here.
-#   n = len(P) # needs to be a power of 2 here, pad as necessary prior
-#   if n == 1:
-#     return [P[0]]
-  
-#   # exp = (2 * math.pi * i) / n
-#   # w = math.e ^ exp
-#   theta = -2 * math.pi / n
-#   w = list( complex( math.cos(theta * i), math.sin(theta * i)) for i in range(n) ) 
-
-#   Pe, Po = P[0::2], P[1::2]
-#   ye, yo = FFT(Pe), FFT(Po)
-
-#   y = [0] * n
-#   mid = n // 2
-#   for j in range(mid):
-#     prod = w[j] * yo[j]
-#     even_grab = ye[j]
-#     y[j] = even_grab + prod
-#     y[j + mid] = even_grab - prod
-
-#   return y
-
-
 # Fast Fourier Transform implementation
 def FFT(coeffs, invert=False):
     n = len(coeffs)
@@ -58,12 +9,14 @@ def FFT(coeffs, invert=False):
         return
 
     # Split into even and odd indexed terms
-    even_terms = [coeffs[2 * i] for i in range(n // 2)]
-    odd_terms = [coeffs[2 * i + 1] for i in range(n // 2)]
+    # even_terms = [coeffs[2 * i] for i in range(n // 2)]
+    even_coeff = coeffs[::2]
+    # odd_terms = [coeffs[2 * i + 1] for i in range(n // 2)]
+    odd_coeff = coeffs[1::2]
 
     # Recursive FFT on both halves
-    FFT(even_terms, invert)
-    FFT(odd_terms, invert)
+    FFT(even_coeff, invert)
+    FFT(odd_coeff, invert)
 
     # Calculate angle and root of unity
     pi = cmath.pi
@@ -73,9 +26,9 @@ def FFT(coeffs, invert=False):
 
     # Combine
     for i in range(n // 2):
-        t = w * odd_terms[i]
-        coeffs[i] = even_terms[i] + t
-        coeffs[i + n // 2] = even_terms[i] - t
+        t = w * odd_coeff[i]
+        coeffs[i] = even_coeff[i] + t
+        coeffs[i + n // 2] = even_coeff[i] - t
 
         if invert:
             coeffs[i] /= 2
@@ -137,8 +90,8 @@ def eval(P, x):
 A = [1, 2, 3, 4] # number is 4321
 B = [1, 2, 2, 0] # number is 221
 # 4321 * 221 = 954941 !
-A = [2, 0, 0, 0]
-B = [0, 0, 0, 2]
+A = [2, 0, 0, 0, 0]
+B = [0, 0, 0, 2, 0]
 # 2 * 2000 = 4000
 
 
