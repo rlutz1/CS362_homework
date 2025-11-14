@@ -1,6 +1,7 @@
 import cmath
 
 i = complex(0, 1)
+pi = cmath.pi
 
 # FFT implementation
 def FFT(coeffs, invert):
@@ -17,104 +18,97 @@ def FFT(coeffs, invert):
     FFT(odd_coeff, invert)
 
     # get your roots of unity to evaluate at to make your points
-    angle = 2 * cmath.pi / n * (-1 if invert else 1) # 1/w if inverting!
-    w = complex(1, 0)
-    wn = cmath.exp(complex(0, angle)) # w ^
+    inversion_factor = -1
+    if invert: inversion_factor = 1
 
-    # Combine
-    for i in range(n // 2):
-        t = w * odd_coeff[i]
-        coeffs[i] = even_coeff[i] + t
-        coeffs[i + n // 2] = even_coeff[i] - t
+    angle = 2 * pi / n * inversion_factor # 1/w if inverting! otherwise normal exp
+    w = complex(1, 0) # set up the omega as 1 to initialize
+    wn = cmath.exp(complex(0, angle)) # e ^ 2(pi)(i)/n or e ^ -2(pi)(i)/n (if invert)
 
-        if invert:
+    # get your points or coeffs
+    for i in range(n // 2): # from 0 -> n/2 - 1
+        t = w * odd_coeff[i] 
+        coeffs[i] = even_coeff[i] + t # positive pairing
+        coeffs[i + n // 2] = even_coeff[i] - t # negative pairing
+
+        if invert: # inversion adjustment
             coeffs[i] /= 2
             coeffs[i + n // 2] /= 2
-        w *= wn
-
-# def pair_wise_mult(A, B):
-#   C = []
-#   bc = 0
-#   for x1, y1 in A:
-#     x2, y2 = B[bc]
-#     C.append((x1 * x2, y1 * y2))
-#     bc += 1
-#   return C
+            
+        w *= wn # accumulate to next root of unity
 
 
-# Function to multiply two polynomials using FFT
-def multiply(A, B):
-    n = 1
-    while n < len(A) + len(B):
-        n <<= 1
+# multiply two polynomials using FFT
+def mult_poly(A, B):
+    # pad out to n + m in length to fit the new polynomial of degree at least n + m
+    n = len(A)
+    m = len(B)
+    new_degree = 1
+    while new_degree < n + m:
+        new_degree <<= 1 # get this to a multiple of 2
 
-    fftA = [complex(A[i] if i < len(A) else 0, 0) for i in range(n)]
-    fftB = [complex(B[i] if i < len(B) else 0, 0) for i in range(n)]
-
-    # Apply forward FFT to both
+    # pad with high order zero coefficients, convert to complex
+    fftA = [complex(A[i] if i < n else 0, 0) for i in range(new_degree)]
+    fftB = [complex(B[i] if i < m else 0, 0) for i in range(new_degree)]
+   
+    # apply fft to get 2n points at roots of unity
     FFT(fftA, False)
     FFT(fftB, False)
 
-    # Point-wise multiplication
-    for i in range(n):
+    # point-wise multiplication
+    for i in range(new_degree):
         fftA[i] *= fftB[i]
 
-    # Inverse FFT to get back coefficients
+    # invert! get the coeffs back and place into
     FFT(fftA, True)
 
-    # Round real parts to integers
-    result = [round(fftA[i].real) for i in range(n)]
+    # round the reals--round off errors likely
+    for i in range(new_degree):
+        fftA[i] = round(fftA[i].real)
 
-    # Remove trailing zeroes (optional)
-    while len(result) >= (len(A) + len(B)):
-        result.pop()
+    # strip the padding from the end
+    i = new_degree - 1
+    while fftA[i] == 0:
+        fftA.pop()
+        i -= 1
 
-    return result
+    return fftA
 
 def eval(P, x):
     # evaluate a polynomial at a given x
-    # should be a list of coefficients, we'll assume lowest to highest order
-    exp = 0
-    acc = 0
-    for coeff in P:
-        acc += coeff * (x ** exp)
-        exp += 1
+    # should be a list of coefficients, need to process
+    # backwards since its given lowest to highest ordering
+    # use horners method/nested mult to achieve linear mult
+    n = len(P) - 1
+    acc = P[n]
+    for i in range(n - 1, -1, -1):
+        acc = (acc * x) + P[i]
     return acc
         
-        
+# SCRIPT RUN
 
-# A = [1, 1, 1, 1] # x^3 + x^2 + x + 1
-A = [1, 2, 3, 4] # number is 4321
-B = [1, 2, 2, 0] # number is 221
-# 4321 * 221 = 954941 !
-A = [2, 0, 0, 0, 0]
-B = [0, 0, 0, 2, 0]
-# 2 * 2000 = 4000
+# comment out any A or B to try different combos
 
+# 341 * 1 = 341
+A = [1, 4, 3] 
+B = [1] 
 
-product = multiply(A, B)
-print(*product)
+# 21 ^ 2 = 441 
+# A = [1, 2]
+# B = [1, 2]
 
+# 4037 * 65 = 262405
+# A = [7, 3, 0, 4]
+# B = [5, 6]
+
+# 12350960 * 53 = 654600880
+# A = [0, 6, 9, 0, 5, 3, 2, 1]
+# B = [3, 5]
+
+# 2 * 4 = 8
+# A = [4]
+# B = [2]
+
+product = mult_poly(A, B)
 sol = eval(product, 10)
 print(sol)
-
-# fft_returnA = FFT(A)
-# fft_returnB = FFT(B)
-# A_points = []
-# B_points = []
-
-# for a in fft_returnA:
-#   A_points.append((round(a.real), round(a.imag)))
-#   # print(a, end=" ")
-# print(A_points) # the returned 
-
-# for b in fft_returnB:
-#   B_points.append((round(b.real), round(b.imag)))
-#   # print(b, end=" ")
-# print(B_points)
-
-# C_points = pair_wise_mult(A_points, B_points)
-# print(C_points)
-
-# final_coef = IFFT(C_points)
-# print(final_coef)
