@@ -18,8 +18,8 @@ def FFT(coeffs, invert):
     FFT(odd_coeff, invert)
 
     # get your roots of unity to evaluate at to make your points
-    inversion_factor = -1
-    if invert: inversion_factor = 1
+    inversion_factor = 1
+    if invert: inversion_factor = -1
 
     angle = 2 * pi / n * inversion_factor # 1/w if inverting! otherwise normal exp
     w = complex(1, 0) # set up the omega as 1 to initialize
@@ -34,7 +34,7 @@ def FFT(coeffs, invert):
         if invert: # inversion adjustment
             coeffs[i] /= 2
             coeffs[i + n // 2] /= 2
-            
+
         w *= wn # accumulate to next root of unity
 
 
@@ -93,21 +93,37 @@ def eval(P, x):
 A = [1, 4, 3] 
 B = [1] 
 
+product = mult_poly(A, B)
+sol = eval(product, 10)
+print(sol)
+
 # 21 ^ 2 = 441 
-# A = [1, 2]
-# B = [1, 2]
+A = [1, 2]
+B = [1, 2]
+
+product = mult_poly(A, B)
+sol = eval(product, 10)
+print(sol)
 
 # 4037 * 65 = 262405
-# A = [7, 3, 0, 4]
-# B = [5, 6]
+A = [7, 3, 0, 4]
+B = [5, 6]
+
+product = mult_poly(A, B)
+sol = eval(product, 10)
+print(sol)
 
 # 12350960 * 53 = 654600880
-# A = [0, 6, 9, 0, 5, 3, 2, 1]
-# B = [3, 5]
+A = [0, 6, 9, 0, 5, 3, 2, 1]
+B = [3, 5]
+
+product = mult_poly(A, B)
+sol = eval(product, 10)
+print(sol)
 
 # 2 * 4 = 8
-# A = [4]
-# B = [2]
+A = [4]
+B = [2]
 
 product = mult_poly(A, B)
 sol = eval(product, 10)
